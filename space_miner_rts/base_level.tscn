@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://deoa2mx5w4byt"]
+
+[ext_resource type="Script" uid="uid://dauwlonnjpnh5" path="res://base_level.gd" id="1_bo3yr"]
+[ext_resource type="PackedScene" uid="uid://ctwgy8wqax0jm" path="res://camera_control.tscn" id="2_5vx1e"]
+[ext_resource type="PackedScene" uid="uid://brc0kk0n1kagx" path="res://player_station.tscn" id="3_eesb3"]
+
+[node name="Base_Level" type="Node3D"]
+script = ExtResource("1_bo3yr")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.428714, 0.90344, 0, -0.90344, 0.428714, 0, 0, 0)
+
+[node name="Camera_control" parent="." instance=ExtResource("2_5vx1e")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="Player_station" parent="." instance=ExtResource("3_eesb3")]

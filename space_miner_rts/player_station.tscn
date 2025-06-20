@@ -1,0 +1,78 @@
+[gd_scene load_steps=11 format=3 uid="uid://brc0kk0n1kagx"]
+
+[ext_resource type="Texture2D" uid="uid://54qsu5ma40tn" path="res://Textures/space_station_wall_with_hatch_28_30_roughness.jpg" id="1_6aesv"]
+[ext_resource type="Script" uid="uid://bmf33yxghchti" path="res://player_station.gd" id="1_bt33m"]
+[ext_resource type="Script" uid="uid://bcw6pdcicfe50" path="res://stattion_coll.gd" id="2_n6lt2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bt33m"]
+albedo_texture = ExtResource("1_6aesv")
+uv1_scale = Vector3(5, 5, 5)
+
+[sub_resource type="TorusMesh" id="TorusMesh_ym3or"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6aesv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ym3or"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bt33m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6aesv"]
+transparency = 1
+albedo_color = Color(0, 0.921569, 0.027451, 0.286275)
+emission_enabled = true
+emission = Color(0, 0.796078, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_bt33m"]
+material = SubResource("StandardMaterial3D_6aesv")
+
+[node name="Player_station" type="Node3D"]
+script = ExtResource("1_bt33m")
+
+[node name="Stattion_coll" type="StaticBody3D" parent="."]
+script = ExtResource("2_n6lt2")
+
+[node name="ring" type="MeshInstance3D" parent="Stattion_coll"]
+transform = Transform3D(1.34197, 0, 0, 0, 1, 0, 0, 0, 1.50503, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_bt33m")
+mesh = SubResource("TorusMesh_ym3or")
+
+[node name="ring2" type="MeshInstance3D" parent="Stattion_coll"]
+transform = Transform3D(1.34197, 0, 0, 0, 1, 0, 0, 0, 1.50503, 0, 1.24708, 0)
+material_override = SubResource("StandardMaterial3D_bt33m")
+mesh = SubResource("TorusMesh_ym3or")
+
+[node name="ring3" type="MeshInstance3D" parent="Stattion_coll"]
+transform = Transform3D(1.34197, 0, 0, 0, 1, 0, 0, 0, 1.50503, 0, -1.15888, 0)
+material_override = SubResource("StandardMaterial3D_bt33m")
+mesh = SubResource("TorusMesh_ym3or")
+
+[node name="Base_station" type="MeshInstance3D" parent="Stattion_coll"]
+transform = Transform3D(1, 0, 0, 0, 1.95118, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_bt33m")
+mesh = SubResource("CylinderMesh_6aesv")
+
+[node name="bar" type="MeshInstance3D" parent="Stattion_coll"]
+transform = Transform3D(2.16399, 0, 0, 0, 0.376932, 0, 0, 0, 0.598161, 0, 1.2453, 0)
+material_override = SubResource("StandardMaterial3D_bt33m")
+mesh = SubResource("BoxMesh_ym3or")
+
+[node name="bar2" type="MeshInstance3D" parent="Stattion_coll"]
+transform = Transform3D(2.16399, 0, 0, 0, 0.376932, 0, 0, 0, 0.598161, 0, -0.0468765, 0)
+material_override = SubResource("StandardMaterial3D_bt33m")
+mesh = SubResource("BoxMesh_ym3or")
+
+[node name="bar3" type="MeshInstance3D" parent="Stattion_coll"]
+transform = Transform3D(2.16399, 0, 0, 0, 0.376932, 0, 0, 0, 0.598161, 0, -1.20834, 0)
+material_override = SubResource("StandardMaterial3D_bt33m")
+mesh = SubResource("BoxMesh_ym3or")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stattion_coll"]
+transform = Transform3D(2.65544, 0, 0, 0, 3.93389, 0, 0, 0, 2.86827, 0, 0, 0)
+shape = SubResource("BoxShape3D_bt33m")
+
+[node name="Highlight" type="Node3D" parent="."]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Highlight"]
+transform = Transform3D(2.67532, 0, 0, 0, 2.40753, 0, 0, 0, 2.98614, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_bt33m")
