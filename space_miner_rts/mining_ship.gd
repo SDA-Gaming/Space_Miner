@@ -66,8 +66,8 @@ func _physics_process(delta: float) -> void:
 		if speed < top_speed:
 			speed += (0.2 * delta)
 		print(speed)
-		apply_force(Vector3(speed,0.0,0.0))
-		#apply_central_force(Vector3(speed,0.0,0.0))
+		#apply_force(Vector3(speed,0.0,0.0))
+		apply_central_force(Vector3(speed,0.0,0.0))
 		
 	
 	
