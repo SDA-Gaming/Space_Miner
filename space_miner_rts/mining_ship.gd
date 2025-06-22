@@ -2,13 +2,16 @@ extends RigidBody3D
 
 
 var Target
-var top_speed = 2.0
+var top_speed = 0.5
 var speed = 0
-var acceleration = 0.2
+var acceleration = 0.01
 
 var t = 0.0
 var Station
 var on_the_job = false
+
+var orbit_range = 3.0
+var is_orbiting = false
 
 
 
@@ -48,9 +51,6 @@ func _physics_process(delta: float) -> void:
 		
 		#angling the "target_look" tword the target
 		$Target_look.look_at(Target.global_transform.origin,Vector3.MODEL_FRONT)
-		#$Target_look.rotation.y = lerp_angle($Target_look.rotation_degrees.y, atan2(Target.global_transform.origin.x, Target.global_transform.origin.z) ,AtanV) 
-		#print(str("Rotation ") + str($Target_look.rotation.y) + str(" rot + rot to Target: ") + str(lerp_angle($Target_look.rotation_degrees.y, atan2(Target.global_transform.origin.x, Target.global_transform.origin.z) ,AtanV)) + str(" rotation to target: ") + str($Target_look.rotation_degrees.y, atan2(Target.global_transform.origin.x, Target.global_transform.origin.z)) )
-		#print(str(Target.global_transform.origin.x) + str(" ") + str(Target.global_transform.origin.y))
 		
 		
 		
@@ -64,10 +64,59 @@ func _physics_process(delta: float) -> void:
 		
 		#speed control
 		if speed < top_speed:
-			speed += (0.2 * delta)
+			if speed + (acceleration * delta) <= top_speed:
+				speed += (acceleration * delta)
 		print(speed)
-		#apply_force(Vector3(speed,0.0,0.0))
-		apply_central_force(Vector3(speed,0.0,0.0))
+		
+		#apply_central_force(Vector3(speed,0.0,0.0))
+		
+		
+		# Check if close enough to orbit
+		
+		var distance = (Target.global_transform.origin - global_transform.origin).length()
+		
+		if distance < orbit_range:
+			is_orbiting = true
+		else:
+			is_orbiting = false
+		
+		var orbit_speed = speed / 2
+		
+		if is_orbiting:
+			rotate_around_point(Target.global_transform.origin, Vector3.UP, orbit_speed * delta)
+		else:
+			# Calculate direction vector
+			var dir = Target.global_transform.origin - global_transform.origin
+			dir.y = 0 #Make sure we're moving in the same plane as the astroid
+			
+			# Smoothly move towards target
+			var smooth_speed = speed * 0.1 # adjust this value to control how quickly the ship reaches its target
+			translate(dir.normalized() * smooth_speed)
+			# Move towards target
+			move_and_collide(dir.normalized() * speed)
+		
+		
 		
 	
 	
+
+
+func rotate_around_point(center: Vector3, axis: Vector3, delta: float) -> void:
+	
+	# Calculate the direction vector from the center to the current position
+	
+	var dir = global_transform.origin - center
+	# Calculate distance from center point
+	
+	var distance = dir.length()
+	
+	# Calculate desired orbital period in seconds (adjust as needed)
+	const _orbital_period = 2.0
+	
+	# Calculate angular velocity based on distance and desired orbital period
+	
+	var angular_velocity = 2 * PI / (_orbital_period * distance)
+	# Rotate around the specified axis by the calculated angle per frame
+	rotate(axis.normalized(), angular_velocity * delta)
+	# Translate back to maintain position relative to the center point
+	translate(dir)
